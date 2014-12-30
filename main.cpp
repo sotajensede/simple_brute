@@ -112,7 +112,7 @@ void output()
     char output[maxLen];
     //start output
     //increment length of output
-    while(length<minLen){
+    while(length<maxLen){
         //DO SHIT
         length++;
     }
