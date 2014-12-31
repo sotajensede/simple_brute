@@ -78,6 +78,8 @@ void setParams(int argc, char *argv[])
 
 void output()
 {
+    //height of 2d output array
+    int height=0;
     //create and fill alphabet array
     if(params[0]||params[1]){
         char alphabet[26];
@@ -85,7 +87,7 @@ void output()
         for(char c='a';c<='z';c++){
             alphabet[c-'a'] = c;
             //TEST
-            cout<<alphabet[c-'a']<<'\n';
+            //cout<<alphabet[c-'a']<<'\n';
         }
         if(params[1]){
             locale loc;
@@ -93,23 +95,26 @@ void output()
             for(int i=0;i<26;i++){
                 caps[i]=toupper(alphabet[i],loc);               
                 //TEST
-                cout<<caps[i]<<'\n';
+                //cout<<caps[i]<<'\n';
             }
         }
     }
+    //add room for numbers
+    if(params[2])
+        height=height+10;
     //special characters array
     if(params[3]){
         char specials[] {'?', '!', '@', '#', '$', '%', '^', '&',
                          '*', '(', ')', '{', '}', '|', '\\', '/',
                          '_', '-', '=', '+', '~', '`'};
         //TEST
-        for(int i=0;i<22;i++)
-            cout<<specials[i]<<'\n';
+        //for(int i=0;i<22;i++)
+        //    cout<<specials[i]<<'\n';
     }
+    //array to be printed.
+    char output[height][maxLen];
     //current output length
     int length = minLen;
-    //array to be printed.
-    char output[maxLen];
     //start output
     //increment length of output
     while(length<=maxLen){
