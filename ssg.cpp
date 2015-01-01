@@ -99,20 +99,17 @@ void output()
             }
         }
     }
-    //add room for numbers
-    if(params[2])
-        height=height+10;
     //special characters array
     if(params[3]){
         char specials[] {'?', '!', '@', '#', '$', '%', '^', '&',
                          '*', '(', ')', '{', '}', '|', '\\', '/',
                          '_', '-', '=', '+', '~', '`'};
         //TEST
-        //for(int i=0;i<22;i++)
-        //    cout<<specials[i]<<'\n';
+        for(int i=0;i<22;i++)
+            cout<<specials[i]<<'\n';
     }
     //array to be printed.
-    char output[height][maxLen];
+    char output[maxLen][height];
     //current output length
     int length = minLen;
     //start output
