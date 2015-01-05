@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <locale>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -101,15 +102,15 @@ void output()
     }
     //special characters array
     if(params[3]){
-        char specials[] {'?', '!', '@', '#', '$', '%', '^', '&',
+        char specials[]={'?', '!', '@', '#', '$', '%', '^', '&',
                          '*', '(', ')', '{', '}', '|', '\\', '/',
                          '_', '-', '=', '+', '~', '`'};
         //TEST
-        for(int i=0;i<22;i++)
-            cout<<specials[i]<<'\n';
+        //for(int i=0;i<22;i++)
+        //    cout<<specials[i]<<'\n';
     }
     //array to be printed.
-    char output[maxLen][height];
+    char output[height][maxLen];
     //current output length
     int length = minLen;
     //start output
