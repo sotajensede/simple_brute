@@ -1,13 +1,11 @@
 /*
- *
  * Jesse Deaton
  *
  * String generation program
  * for possible use with brute
  * force attack.
  *
- * December 24, 2014
- *
+ * December, 2014
  */
 
 #include <iostream>
@@ -20,24 +18,21 @@ using namespace std;
 //sets parameters by given args
 void setParams(int argc, char *argv[]);
 //outputs based on givem parameters
-void output();
+void buildOutput();
 
-// global parameters
-int minLen = 0;
-int maxLen = 0;
+int minLen,maxLen;
 bool params[4]; //letters, caps, numbers, special
 
 int main(int argc, char *argv[])
 {
-
     if(argc<3)
-        cout<<"Specify a min/max length respectively\n"
-            <<"along with some arguments:\n\n"
+        cout<<"Usage: ssg [min_length] [max_length] "
+            <<"arg1 arg2 arg3...\n\n"
             <<"l - letters\nc - caps\nn - numbers\n"
             <<"s - special characters\n";
     else{
         setParams(argc,argv);
-        output();
+        buildOutput();
     }
     return 0;
 }
@@ -52,52 +47,26 @@ void setParams(int argc, char *argv[])
         params[i]=false;
     //set parameter array based on args
     for(int i=3;i<argc;i++){
-        if(*argv[i]=='l') //letters
-            params[0]=true;
-        if(*argv[i]=='c') //caps
-            params[1]=true;
-        if(*argv[i]=='n') //numbers
-            params[2]=true;
-        if(*argv[i]=='s') //specials
-            params[3]=true;
+        if(*argv[i]=='l') params[0]=true;
+        if(*argv[i]=='c') params[1]=true;
+        if(*argv[i]=='n') params[2]=true;
+        if(*argv[i]=='s') params[3]=true;
     }
-    //  TEST
-    /*
-    cout << "min length: " << minLen << '\n';
-    cout << "max length: " << maxLen << '\n';
-
-    if(params[0])
-        cout<<"letters "<< '\n';
-    if(params[1])
-        cout<<"capitals "<< '\n';
-    if(params[2])
-        cout<<"numbers "<< '\n';
-    if(params[3])
-        cout<<"specials "<< '\n';
-    */
 }
 
-void output()
+void buildOutput()
 {
-    //height of 2d output array
-    int height=0;
-    //create and fill alphabet array
+    //create and fill alphabet array(s)
     if(params[0]||params[1]){
-        char alphabet[26];
-        alphabet[0]='a';
-        for(char c='a';c<='z';c++){
-            alphabet[c-'a'] = c;
-            //TEST
-            //cout<<alphabet[c-'a']<<'\n';
-        }
+        char *alphabet[26];
+        *alphabet[0]='a';
+        for(char c='a';c<='z';c++)
+            *alphabet[c-'a'] = c;
         if(params[1]){
             locale loc;
-            char caps[26];
-            for(int i=0;i<26;i++){
-                caps[i]=toupper(alphabet[i],loc);               
-                //TEST
-                //cout<<caps[i]<<'\n';
-            }
+            char *caps[26];
+            for(int i=0;i<26;i++)
+                *caps[i]=toupper(*alphabet[i],loc);               
         }
     }
     //special characters array
@@ -105,19 +74,5 @@ void output()
         char specials[]={'?', '!', '@', '#', '$', '%', '^', '&',
                          '*', '(', ')', '{', '}', '|', '\\', '/',
                          '_', '-', '=', '+', '~', '`'};
-        //TEST
-        //for(int i=0;i<22;i++)
-        //    cout<<specials[i]<<'\n';
-    }
-    //array to be printed.
-    char output[height][maxLen];
-    //current output length
-    int length = minLen;
-    //start output
-    //increment length of output
-    while(length<=maxLen){
-        //DO SHIT
-        length++;
     }
 }
-
