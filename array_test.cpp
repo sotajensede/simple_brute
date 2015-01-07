@@ -20,9 +20,8 @@ int main()
     int mxHt=2; //highest y coordinate
     int index=3; //highest x coordinate
     int x=index;
-    int yCoords[]={0,0,0,0}; //y coords are the
-                             //only thing that change
-    bool run=true; //outer loop bool
+    int yCoords[]={0,0,0,0}; //y coords are the only thing that change
+
     while(true){    
         for(int i=cut;i<4;i++)
             std::cout<<anArray[yCoords[i]][i];
