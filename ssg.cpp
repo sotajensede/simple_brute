@@ -20,6 +20,7 @@ int setParams(int argc, char *argv[]);
 //outputs based on givem parameters
 void buildOutput(int height);
 
+
 int minLen,maxLen;
 bool params[4]; //letters, caps, numbers, special
 
@@ -74,28 +75,26 @@ void buildOutput(int height)
         char alphabet[26];
         alphabet[0]='a';
         for(char c='a';c<='z';c++) alphabet[c-'a'] = c;
-        for(int i=0;i<maxLen;i++)
-            for(int j=fill;j<height;j++)
-                output[j][i]=alphabet[j];
-        fill++;
+		if(params[0]){
+			for(int y=fill;y<26+fill;y++)
+				for(int x=0;x<maxLen;x++) output[y][x]=alphabet[y-fill];
+			fill+=26;
+		}
         if(params[1]){
             locale loc;
             char caps[26];
-            for(int i=0;i<26;i++)
-                caps[i]=toupper(alphabet[i],loc);               
-            for(int i=0;i<maxLen;i++)
-                for(int j=fill;j<height;j++)
-                    output[j][i]=caps[j];
-            fill++;
-        }
+            for(int i=0;i<26;i++) caps[i]=toupper(alphabet[i],loc);               
+			for(int y=fill;y<26+fill;y++)
+				for(int x=0;x<maxLen;x++) output[y][x]=caps[y-fill];
+			fill+=26;
+		}
     }
     //numbers
     if(params[2]){
-        char numeros[]={0,1,2,3,4,5,6,7,8,9};
-        for(int i=0;i<maxLen;i++)
-            for(int j=fill;j<height;j++)
-                output[j][i]=numeros[j];
-        fill++;
+        char numeros[]={'0','1','2','3','4','5','6','7','8','9'};
+		for(int y=fill;y<10+fill;y++)
+			for(int x=0;x<maxLen;x++) output[y][x]=numeros[y-fill];
+		fill+=10;
     }
     //special characters array
     if(params[3]){
@@ -103,9 +102,41 @@ void buildOutput(int height)
                          '*', '(', ')', '{', '}', '|', '\\', '/',
                          '_', '-', '=', '+', '~', '`', '\'', '\"',
                          ':', ';', '<', '>', ',', '.'};
-        for(int i=0;i<maxLen;i++)
-            for(int j=fill;j<height;j++)
-                output[j][i]=specials[j];
+		for(int y=fill;y<30+fill;y++)
+			for(int x=0;x<maxLen;x++) output[y][x]=specials[y-fill];
+		fill+=30;
     }
+	/*
+    for(int y=0;y<height;y++){
+        for(int x=0;x<maxLen;x++) cout<<output[y][x];
+        cout<<'\n';
+    }
+	*/
+    //*********This will have its own function***********//
+    int cut=0;
+    int mxHt=height-1;
+    int index=maxLen-1;
+    int yCrd[maxLen];
+    for(int i=0;i<maxLen;i++) yCrd[i]=0;
+
+    while(true){
+    for(int i=cut;i<4;i++)
+        cout<<output[yCrd[i]][i];
+    cout<<'\n';
+        while(true){
+            if(yCrd[index]==mxHt){
+                yCrd[index]=0;
+                if(index>0) index--;
+                else if(cut<maxLen-minLen) cut++;
+                else goto end;
+            }
+            if(yCrd[index]<mxHt){
+                yCrd[index]++;
+                index=3;
+                break;
+            }
+        }
+    }
+    end:;
 }
 
