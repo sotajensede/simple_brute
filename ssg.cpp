@@ -120,7 +120,7 @@ void buildOutput(int height)
     for(int i=0;i<maxLen;i++) yCrd[i]=0;
 
     while(true){
-    for(int i=cut;i<4;i++)
+    for(int i=cut;i<maxLen;i++)
         cout<<output[yCrd[i]][i];
     cout<<'\n';
         while(true){
@@ -132,7 +132,7 @@ void buildOutput(int height)
             }
             if(yCrd[index]<mxHt){
                 yCrd[index]++;
-                index=3;
+                index=maxLen-1;
                 break;
             }
         }
