@@ -15,9 +15,9 @@
 
 using namespace std;
 
-//sets parameters by given args
+//sets parameters by given arguments
 int setParams(int argc, char *argv[]);
-//outputs based on givem parameters
+//outputs based on given parameters
 void buildOutput(int height);
 
 
@@ -26,12 +26,14 @@ bool params[4]; //letters, caps, numbers, special
 
 int main(int argc, char *argv[])
 {
-    if(argc<3)
+    if(argc<4)//needs at least one letter argument for now
         cout<<"Usage: ssg [min_length] [max_length] "
             <<"arg1 arg2 arg3...\n\n"
             <<"l - letters\nc - caps\nn - numbers\n"
             <<"s - special characters\n";
-    else buildOutput(setParams(argc,argv));
+    else buildOutput(setParams(argc,argv)); //setParams() sends the height
+											//of the 2d output array to
+											//buildOutput()
     return 0;
 }
 
@@ -65,18 +67,19 @@ int setParams(int argc, char *argv[])
     return height;
 }
 
-//I hate this entire function right now
+//This will be pruned. It build the 2d output array from
+//the given parameters
 void buildOutput(int height)
 {
     char output[height][maxLen]; //the whole point of this
     int fill=0; //keep up with how full output arr is
-    //create and fill alphabet array(s)
+    //alphabet array(s)
     if(params[0]||params[1]){
         char alphabet[26];
         alphabet[0]='a';
         for(char c='a';c<='z';c++) alphabet[c-'a'] = c;
 		if(params[0]){
-			for(int y=fill;y<26+fill;y++)
+			for(int y=fill;y<26+fill;y++)//alphabet is added to 2d output array
 				for(int x=0;x<maxLen;x++) output[y][x]=alphabet[y-fill];
 			fill+=26;
 		}
@@ -96,47 +99,45 @@ void buildOutput(int height)
 			for(int x=0;x<maxLen;x++) output[y][x]=numeros[y-fill];
 		fill+=10;
     }
-    //special characters array
+    //special characters
     if(params[3]){
         char specials[]={'?', '!', '@', '#', '$', '%', '^', '&',
                          '*', '(', ')', '{', '}', '|', '\\', '/',
                          '_', '-', '=', '+', '~', '`', '\'', '\"',
-                         ':', ';', '<', '>', ',', '.'};
+                         ':', ';', '<', '>', ',', '.', };
 		for(int y=fill;y<30+fill;y++)
 			for(int x=0;x<maxLen;x++) output[y][x]=specials[y-fill];
 		fill+=30;
     }
-	/*
-    for(int y=0;y<height;y++){
-        for(int x=0;x<maxLen;x++) cout<<output[y][x];
-        cout<<'\n';
-    }
-	*/
-    //*********This will have its own function***********//
+	//output array is ready for printing
     int cut=0;
     int mxHt=height-1;
     int index=maxLen-1;
     int yCrd[maxLen];
     for(int i=0;i<maxLen;i++) yCrd[i]=0;
-
+	//main output loop
     while(true){
-    for(int i=cut;i<maxLen;i++)
-        cout<<output[yCrd[i]][i];
-    cout<<'\n';
+		//printed by row
+		for(int i=cut;i<maxLen;i++) cout<<output[yCrd[i]][i];
+		cout<<'\n';
+		//counting loop
         while(true){
+			//if column height has been reached,
             if(yCrd[index]==mxHt){
-                yCrd[index]=0;
-                if(index>0) index--;
+                yCrd[index]=0;//reset column
+                if(index>0) index--;// move left, if possible
+				//shrink output length
                 else if(cut<maxLen-minLen) cut++;
+				//if minimum length is reached, end
                 else goto end;
             }
+			//if column height hasn't been reached,
             if(yCrd[index]<mxHt){
-                yCrd[index]++;
-                index=maxLen-1;
-                break;
+                yCrd[index]++;//go to next row in column
+                index=maxLen-1;//move to far right
+                break;//break from counting loop to print
             }
         }
     }
     end:;
 }
-
