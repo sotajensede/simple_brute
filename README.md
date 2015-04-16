@@ -2,7 +2,7 @@ simple_string_gen
 =================
 
 ```
-ssg [min_length] [max_length] arg1 arg2 arg3...
+simple_brute [min_length] [max_length] arg1 arg2 arg3...
 
 l - letters
 c - caps
