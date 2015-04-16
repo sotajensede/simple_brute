@@ -1,4 +1,4 @@
-simple_string_gen
+simple_brute
 =================
 
 ```
