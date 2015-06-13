@@ -8,33 +8,31 @@
  * December, 2014
  */
 
-#include <iostream>
-#include <string>
-#include <locale>
+#include <stdio.h>
 #include <stdlib.h>
-
-using namespace std;
+#include <stdbool.h>
+#include <ctype.h>
 
 //sets parameters by given arguments
 int setParams(int argc, char *argv[]);
 //outputs based on given parameters
 void buildOutput(int height);
+//return give char as upper case
 
 
 int minLen,maxLen;
 bool params[4]; //letters, caps, numbers, special
 
-int main(int argc, char *argv[])
+void main(int argc, char *argv[])
 {
     if(argc<4)//needs at least one letter argument for now
-        cout<<"Usage: ssg [min_length] [max_length] "
-            <<"arg1 arg2 arg3...\n\n"
-            <<"l - letters\nc - caps\nn - numbers\n"
-            <<"s - special characters\n";
+        printf("Usage: ssg [min_length] [max_length] "
+               "arg1 arg2 arg3...\n\n"
+               "l - letters\nc - caps\nn - numbers\n"
+               "s - special characters\n");
     else buildOutput(setParams(argc,argv)); //setParams() sends the height
 											//of the 2d output array to
 											//buildOutput()
-    return 0;
 }
 
 int setParams(int argc, char *argv[])
@@ -84,9 +82,8 @@ void buildOutput(int height)
 			fill+=26;
 		}
         if(params[1]){
-            locale loc;
             char caps[26];
-            for(int i=0;i<26;i++) caps[i]=toupper(alphabet[i],loc);               
+            for(int i=0;i<26;i++) caps[i]=toupper(alphabet[i]);               
 			for(int y=fill;y<26+fill;y++)
 				for(int x=0;x<maxLen;x++) output[y][x]=caps[y-fill];
 			fill+=26;
@@ -118,8 +115,8 @@ void buildOutput(int height)
 	//main output loop
     while(true){
 		//printed by row
-		for(int i=cut;i<maxLen;i++) cout<<output[yCrd[i]][i];
-		cout<<'\n';
+		for(int i=cut;i<maxLen;i++) printf("%c",output[yCrd[i]][i]);
+        printf("\n");
 		//counting loop
         while(true){
 			//if column height has been reached,
