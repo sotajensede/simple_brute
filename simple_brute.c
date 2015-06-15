@@ -14,9 +14,9 @@
 #include <ctype.h>
 
 //sets parameters by given arguments
-int setParams(int argc, char *argv[]);
+int set_params(int argc, char *argv[]);
 //outputs based on given parameters
-void buildOutput(int height);
+void build_output(int height);
 //return give char as upper case
 
 
@@ -30,12 +30,12 @@ void main(int argc, char *argv[])
                "arg1 arg2 arg3...\n\n"
                "l - letters\nc - caps\nn - numbers\n"
                "s - special characters\n");
-    else buildOutput(setParams(argc,argv)); //setParams() sends the height
+    else build_output(set_params(argc,argv)); //setParams() sends the height
 											//of the 2d output array to
 											//buildOutput()
 }
 
-int setParams(int argc, char *argv[])
+int set_params(int argc, char *argv[])
 {
     int height=0;
     //capture max and min length
@@ -67,7 +67,7 @@ int setParams(int argc, char *argv[])
 
 //This will be pruned. It build the 2d output array from
 //the given parameters
-void buildOutput(int height)
+void build_output(int height)
 {
     char output[height][maxLen]; //the whole point of this
     int fill=0; //keep up with how full output arr is
