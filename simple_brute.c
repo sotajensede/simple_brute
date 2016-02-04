@@ -22,13 +22,15 @@ void build_output(int height);
 int minLen,maxLen;
 bool params[4]; //letters, caps, numbers, special
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    if(argc<4)//need at least one letter argument for now
+    if(argc<4) {//need at least one letter argument for now
         printf("Usage: ssg [min_length] [max_length] "
                "arg1 arg2 arg3...\n\n"
                "l - letters\nc - caps\nn - numbers\n"
                "s - special characters\n");
+        return 1;
+        }
     //send height of 2d output array to buildOutput()
     else build_output(set_params(argc,argv));
 }
