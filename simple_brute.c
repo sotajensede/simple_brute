@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
         }
     //send height of 2d output array to buildOutput()
     else build_output(set_params(argc,argv));
+
+    return 0;
 }
 
 int set_params(int argc, char *argv[])
