@@ -5,138 +5,113 @@
  * for possible use with brute
  * force attack.
  *
- * December, 2014
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <getopt.h>
 #include <stdbool.h>
 #include <ctype.h>
 
-//sets parameters by given arguments
-int set_params(int argc, char *argv[]);
-//outputs based on given parameters
-void build_output(int height);
-//return give char as upper case
+#define PROGRAM_NAME "simple_brute"
+#define SUGGEST_HELP "Try \'%s --help\' for more information.\n"
+#define MIN_ARGS 2
 
-int minLen,maxLen;
-bool params[4]; //letters, caps, numbers, special
+typedef struct program_params {
+        bool lflg;
+        bool cflg;
+        bool nflg;
+        bool sflg;
+        bool pflg;
+        bool penflg;
+        bool hflg;
+} program_params;
+
+void print_help();
+int proc_opt(int argc, char *argv[],
+        struct program_params *params);
 
 int main(int argc, char *argv[])
 {
-    if(argc<4) {//need at least one letter argument for now
-        printf("Usage: ssg [min_length] [max_length] "
-               "arg1 arg2 arg3...\n\n"
-               "l - letters\nc - caps\nn - numbers\n"
-               "s - special characters\n");
-        return 1;
-        }
-    //send height of 2d output array to buildOutput()
-    else build_output(set_params(argc,argv));
+    program_params params = {0,0,0,0,0,0,0};
+
+    proc_opt(argc, argv, &params);
+
+    /* test successful option parsing
+    printf("lflag=%d\n", params.lflg);
+    printf("cflag=%d\n", params.cflg);
+    printf("nflag=%d\n", params.nflg);
+    printf("sflag=%d\n", params.sflg);
+    printf("pflag=%d\n", params.pflg);
+    printf("penflag=%d\n", params.penflg);
+    printf("hflag=%d\n", params.hflg);
+    */
 
     return 0;
 }
 
-int set_params(int argc, char *argv[])
+void print_help()
 {
-    int height=0;
-    //capture max and min length
-    minLen = atoi(argv[1]);
-    maxLen = atoi(argv[2]);
-    //clear parameters before setting them
-    for(int i=0;i<4;i++) params[i]=false;
-    //set parameter array based on args
-    for(int i=3;i<argc;i++){
-        if(*argv[i]=='l'){
-            params[0]=true;
-            height+=26;
-        }
-        if(*argv[i]=='c'){
-            params[1]=true;
-            height+=26;
-        }
-        if(*argv[i]=='n'){
-            params[2]=true;
-            height+=10;
-        }
-        if(*argv[i]=='s'){
-            params[3]=true;
-            height+=30;
-        }
-    }
-    return height;
+    // TODO
+    // print simple message with improper usage
+    // print this expanded message with --help
+    printf("Usage: %s [min_length] [max_length] "
+           "arg1 arg2 arg3...\n"
+           "-l\t\tlowercase\n"
+           "-c\t\tcapitals\n"
+           "-n\t\tnumbers\n"
+           "-s\t\tspecial characters\n"
+           "-p[some string]\tincorporate custom string\n"
+           "-P[some string]\tpenumerate over custom string\n"
+           "-h,\t\tprint this message\n", PROGRAM_NAME);
 }
 
-//TODO prune
-//build 2d output array from the given parameters
-void build_output(int height)
+/* process options */
+int proc_opt(int argc, char *argv[],
+        struct program_params *params)
 {
-    char output[height][maxLen];
-    int fill=0;
-    //alphabet array(s)
-    if(params[0] || params[1]){
-        char alphabet[26];
-        alphabet[0]='a';
-        for(char c='a'; c<='z'; c++) alphabet[c-'a']=c;
-    		if(params[0]){
-      			for(int y=fill; y<26+fill; y++)//alphabet added to 2d output array
-      				for(int x=0; x < maxLen; x++) output[y][x]=alphabet[y-fill];
-      			fill+=26;
-    		}
-        if(params[1]){
-            char caps[26];
-            for(int i=0; i<26; i++) caps[i]=toupper(alphabet[i]);
-    			     for(int y=fill; y<26+fill; y++)
-    				for(int x=0; x<maxLen; x++) output[y][x]=caps[y-fill];
-    			  fill+=26;
-    		}
-    }
-    //numbers
-    if(params[2]){
-        char numeros[]={'0','1','2','3','4','5','6','7','8','9'};
-    		for(int y=fill; y<10+fill; y++)
-            for(int x=0; x<maxLen; x++) output[y][x]=numeros[y-fill];
-    		fill+=10;
-    }
-    //specials
-    if(params[3]){
-        char specials[]={'?', '!', '@', '#', '$', '%', '^', '&',
-                         '*', '(', ')', '{', '}', '|', '\\', '/',
-                         '_', '-', '=', '+', '~', '`', '\'', '\"',
-                         ':', ';', '<', '>', ',', '.', };
-    		for(int y=fill; y<30+fill; y++)
-    			for(int x=0; x<maxLen; x++) output[y][x]=specials[y-fill];
-    		fill+=30;
-    }
-    //array ready for printing
-    int cut=0;
-    int mxHt=height-1;
-    int index=maxLen-1;
-    int yCrd[maxLen];
-    for(int i=0; i<maxLen; i++) yCrd[i]=0;
-    //output loop
-    while(true){
-		//print by row
-		for(int i=cut; i<maxLen; i++) printf("%c",output[yCrd[i]][i]);
-        printf("\n");
-        //counting loop
-        while(true){
-            //column height has been reached,
-            if(yCrd[index]==mxHt){
-                yCrd[index]=0;//reset column
-                if(index>0) index--;// move left, if possible
-                //shrink output length
-                else if(cut<maxLen-minLen) cut++;
-                //minimum length is reached, end
-                else goto end;
-            }
-            //column height not reached,
-            if(yCrd[index]<mxHt){
-                yCrd[index]++;//next row in column
-                index=maxLen-1;//move to far right
-                break;//break from counting loop to print
-            }
+    // TODO
+    // use stderr correctly(?) so that program name
+    // doesn't have to be passed twice
+    if(argc < 2)
+        fprintf(stderr, "%s: missing file operand\n"
+            SUGGEST_HELP, PROGRAM_NAME, PROGRAM_NAME);
+
+    static struct option const long_options[] = {
+        {"help", no_argument, NULL, 'h'}
+    };
+
+    int c;
+    while ((c = getopt_long(argc, argv, "lcnsp:P:h",
+                    long_options, NULL)) != -1) {
+        switch (c) {
+            case 'l': params->lflg = 1;
+                break;
+            case 'c': params->cflg = 1;
+                break;
+            case 'n': params->nflg = 1;
+                break;
+            case 's': params->sflg = 1;
+                break;
+            case 'p': params->pflg = 1;
+                break;
+            case 'P': params->penflg = 1;
+                break;
+            case 'h':
+                params->hflg = 1;
+                print_help();
+                break;
+            case '?':
+                if(optopt == 'p' || optopt == 'P')
+                    fprintf(stderr, SUGGEST_HELP, PROGRAM_NAME);
+                else
+                    fprintf(stderr, SUGGEST_HELP, PROGRAM_NAME);
+                break;
+            default:
+                fprintf(stderr, "proc_opt\n");
         }
     }
-    end:;
+    return 0;
 }
+
