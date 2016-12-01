@@ -24,7 +24,7 @@ typedef struct program_params {
         bool nflg; //numbers
         bool sflg; //special
         bool pflg; //inclue string
-        bool penflg; //penumerate over string
+        bool permflg; //permutate over string
         bool hflg; //help
 } program_params;
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     printf("nflag=%d\n", params.nflg);
     printf("sflag=%d\n", params.sflg);
     printf("pflag=%d\n", params.pflg);
-    printf("penflag=%d\n", params.penflg);
+    printf("penflag=%d\n", params.permflg);
     printf("hflag=%d\n", params.hflg);
     */
 
@@ -70,7 +70,7 @@ void print_help()
            "-n\t\tnumbers\n"
            "-s\t\tspecial characters\n"
            "-p[some string]\tincorporate custom string\n"
-           "-P[some string]\tpenumerate over custom string\n"
+           "-P[some string]\tpermutate over custom string\n"
            "-h,\t\tprint this message\n", PROGRAM_NAME);
 }
 
@@ -107,7 +107,7 @@ int proc_opt(int argc, char *argv[],
                 break;
             case 'p': params->pflg = 1;
                 break;
-            case 'P': params->penflg = 1;
+            case 'P': params->permflg = 1;
                 break;
             case 'h':
                 params->hflg = 1;
