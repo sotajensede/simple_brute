@@ -37,14 +37,14 @@ int main(int argc, char *argv[])
 {
     program_params params = {0,0,0,0,0,0,0};
 
-    proc_opt(argc, argv, &params);
+    /* test successful option parsing 
+    int min_len = atoi(argv[1]);
+    int max_len = atoi(argv[2]);
+    printf("Min len: %d\n", min_len);
+    printf("Max len: %d\n", max_len);
 
-    /* test successful option parsing
-    char min_len = *argv[2];
-    char max_len = *argv[3];
-    printf("First arg: %c\n", *argv[1]);
-    printf("Min len: %c\n", min_len);
-    printf("Max len: %c\n", max_len);
+    //this must come after the above four lines
+    proc_opt(argc, argv, &params);
 
     printf("lflag=%d\n", params.lflg);
     printf("cflag=%d\n", params.cflg);
