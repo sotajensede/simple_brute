@@ -19,16 +19,17 @@
 #define MIN_ARGS 2
 
 typedef struct program_params {
-        bool lflg;
-        bool cflg;
-        bool nflg;
-        bool sflg;
-        bool pflg;
-        bool penflg;
-        bool hflg;
+        bool lflg; //lowercase
+        bool cflg; //capitals
+        bool nflg; //numbers
+        bool sflg; //special
+        bool pflg; //inclue string
+        bool penflg; //penumerate over string
+        bool hflg; //help
 } program_params;
 
 void print_help();
+
 int proc_opt(int argc, char *argv[],
         struct program_params *params);
 
@@ -39,6 +40,12 @@ int main(int argc, char *argv[])
     proc_opt(argc, argv, &params);
 
     /* test successful option parsing
+    char min_len = *argv[2];
+    char max_len = *argv[3];
+    printf("First arg: %c\n", *argv[1]);
+    printf("Min len: %c\n", min_len);
+    printf("Max len: %c\n", max_len);
+
     printf("lflag=%d\n", params.lflg);
     printf("cflag=%d\n", params.cflg);
     printf("nflag=%d\n", params.nflg);
@@ -67,7 +74,11 @@ void print_help()
            "-h,\t\tprint this message\n", PROGRAM_NAME);
 }
 
-/* process options */
+/*
+ process options
+ for documentation, see
+ https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt
+*/
 int proc_opt(int argc, char *argv[],
         struct program_params *params)
 {
