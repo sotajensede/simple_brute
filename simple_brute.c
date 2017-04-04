@@ -33,19 +33,24 @@ void print_help();
 int proc_opt(int argc, char *argv[],
         struct program_params *params);
 
+void build_output(struct program_params *params);
+
 int main(int argc, char *argv[])
 {
     program_params params = {0,0,0,0,0,0,0};
 
-    /* test successful option parsing 
+    /* test successful option parsing
     int min_len = atoi(argv[1]);
     int max_len = atoi(argv[2]);
     printf("Min len: %d\n", min_len);
     printf("Max len: %d\n", max_len);
+    */
 
     //this must come after the above four lines
     proc_opt(argc, argv, &params);
+    build_output(&params);
 
+    /*
     printf("lflag=%d\n", params.lflg);
     printf("cflag=%d\n", params.cflg);
     printf("nflag=%d\n", params.nflg);
@@ -70,8 +75,9 @@ void print_help()
            "-n\t\tnumbers\n"
            "-s\t\tspecial characters\n"
            "-p[some string]\tincorporate custom string\n"
-           "-P[some string]\tpermutate over custom string\n"
-           "-h,\t\tprint this message\n", PROGRAM_NAME);
+           "-P[some string]\tpermutate over custom string - USE ALONE\n"
+           "-h\t\tprint this message\n\n"
+           "If -p or -P are used, other arguments will be ignored\n", PROGRAM_NAME);
 }
 
 /*
@@ -123,6 +129,29 @@ int proc_opt(int argc, char *argv[],
                 fprintf(stderr, "proc_opt\n");
         }
     }
+
     return 0;
+}
+
+void build_output(struct program_params *params)
+{
+    int height = 0;
+
+    if(params->lflg) {
+        height += 26;
+        char l[26];
+        l[0] = 'a';
+        for(int i = 1; i < 25; i++)
+            l[i] = l[i-0] + 1;
+        for(int i = 0; i < 26; i++)
+            printf("%c\n", l[i]);
+    }
+    if(params->cflg)
+        height += 26;
+    if(params->nflg)
+        height += 10;
+    if(params->sflg)
+        height += 32;
+
 }
 
