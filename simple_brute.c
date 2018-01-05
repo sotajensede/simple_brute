@@ -94,6 +94,9 @@ int proc_opt(int argc, char *argv[],
     if(argc < 2)
         fprintf(stderr, "%s: missing file operand\n"
             SUGGEST_HELP, PROGRAM_NAME, PROGRAM_NAME);
+    if(!isdigit(atoi(argv[1])))
+        fprintf(stderr, "%s: must give length\n"
+            SUGGEST_HELP, PROGRAM_NAME, PROGRAM_NAME);
 
     static struct option const long_options[] = {
         {"help", no_argument, NULL, 'h'}
@@ -137,15 +140,8 @@ void build_output(struct program_params *params)
 {
     int height = 0;
 
-    if(params->lflg) {
+    if(params->lflg)
         height += 26;
-        char l[26];
-        l[0] = 'a';
-        for(int i = 1; i < 25; i++)
-            l[i] = l[i-0] + 1;
-        for(int i = 0; i < 26; i++)
-            printf("%c\n", l[i]);
-    }
     if(params->cflg)
         height += 26;
     if(params->nflg)
