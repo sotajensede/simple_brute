@@ -18,6 +18,12 @@
 #define SUGGEST_HELP "Try \'%s --help\' for more information.\n"
 #define MIN_ARGS 2
 
+// switched to global variables for output size
+// because passing pointers obfuscates intention, subject to change
+int output_h = 0;
+int output_w = 0;
+
+// parameter switches
 typedef struct program_params {
         bool lflg; //lowercase
         bool cflg; //capitals
@@ -94,9 +100,9 @@ int proc_opt(int argc, char *argv[],
     if(argc < 2)
         fprintf(stderr, "%s: missing file operand\n"
             SUGGEST_HELP, PROGRAM_NAME, PROGRAM_NAME);
-    if(!isdigit(atoi(argv[1])))
-        fprintf(stderr, "%s: must give length\n"
-            SUGGEST_HELP, PROGRAM_NAME, PROGRAM_NAME);
+    //if(!isdigit(atoi(argv[1])) || (//))
+    //    fprintf(stderr, "%s: must give length\n"
+    //        SUGGEST_HELP, PROGRAM_NAME, PROGRAM_NAME);
 
     static struct option const long_options[] = {
         {"help", no_argument, NULL, 'h'}
@@ -138,16 +144,15 @@ int proc_opt(int argc, char *argv[],
 
 void build_output(struct program_params *params)
 {
-    int height = 0;
-
+    // build 2D array based on given parameters
     if(params->lflg)
-        height += 26;
+        output_h += 26;
     if(params->cflg)
-        height += 26;
+        output_h += 26;
     if(params->nflg)
-        height += 10;
+        output_h += 10;
     if(params->sflg)
-        height += 32;
+        output_h += 32;
 
 }
 
